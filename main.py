@@ -64,12 +64,37 @@ def choose_best_crosswords(crosswords_par, num_of_best=10):
         fitness_function.append([fitness, len(fitness_function)])
     fitness_function.sort(key=lambda x: x[0], reverse=True)
     # check_crossword(crosswords[fitness_function[0][1]])
-    # print(fitness_function)
+    # print(fitness_function[0][0])
     # print(crosswords[fitness_function[0][1]])
     best_crosswords_found = []
     for best_i in range(num_of_best):
         best_crosswords_found.append(crosswords[fitness_function[best_i][1]])
     return best_crosswords_found
+
+
+def crosswords_crossover(crossword_a_par, crossword_b_par, longer):
+    crossword_a = copy.deepcopy(crossword_a_par)
+    crossword_b = copy.deepcopy(crossword_b_par)
+    if len(crossword_b) > len(crossword_a):
+        crossword_a, crossword_b = crossword_b, crossword_a
+
+    separate_line = list(range(1, len(crossword_b)))
+    while separate_line:
+        i = random.choice(separate_line)
+        separate_line.remove(i)
+        crossover = []
+        for j in range(i):
+            crossover.append(crossword_b[j] if longer else crossword_a[j])
+        for j in range(i, len(crossword_a if longer else crossword_b)):
+            crossover.append(crossword_a[j] if longer else crossword_b[j])
+        unique_crossover = []
+        for intersection in crossover:
+            if intersection not in unique_crossover:
+                unique_crossover.append(intersection)
+        if check_crossword(unique_crossover):
+            return unique_crossover
+
+    return crossword_a if random.random() <= 0.5 else crossword_b
 
 
 inp = []
@@ -95,4 +120,9 @@ for i in range(100):
 
 while True:
     best_crosswords = choose_best_crosswords(crosswords)
-    print(best_crosswords)
+    crosswords = copy.deepcopy(best_crosswords)
+    for i in range(10):
+        for j in range(i + 1, 10):
+            crosswords.append(crosswords_crossover(best_crosswords[i], best_crosswords[j], True))
+            crosswords.append(crosswords_crossover(best_crosswords[i], best_crosswords[j], False))
+    print(len(crosswords))
