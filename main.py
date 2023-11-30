@@ -41,7 +41,7 @@ def check_crossword(intersections_par, real_intersections_par=None):
     return has_solution
 
 
-def choose_best_crosswords(crosswords_par, num_of_best=10):
+def choose_best_crosswords(crosswords_par, num_of_best):
     fitness_function = []
 
     def dfs(node):
@@ -64,7 +64,7 @@ def choose_best_crosswords(crosswords_par, num_of_best=10):
         fitness_function.append([fitness, len(fitness_function)])
     fitness_function.sort(key=lambda x: x[0], reverse=True)
     # check_crossword(crosswords[fitness_function[0][1]])
-    # print(fitness_function[0][0])
+    print(fitness_function[0][0])
     # print(crosswords[fitness_function[0][1]])
     best_crosswords_found = []
     for best_i in range(num_of_best):
@@ -97,6 +97,36 @@ def crosswords_crossover(crossword_a_par, crossword_b_par, longer):
     return crossword_a if random.random() <= 0.5 else crossword_b
 
 
+def crosswords_mutation(initial_crosswords):
+    res_crosswords = []
+    for crossword in initial_crosswords:
+        proper_crossword = False
+        while not proper_crossword:
+            random_choice = random.random()
+            if random_choice <= 0.25:
+                crossword.remove(random.choice(crossword))
+                break
+            elif random_choice <= 0.5:
+                while True:
+                    crossword.append(random.choice(possible_intersections))
+                    if check_crossword(crossword):
+                        proper_crossword = True
+                        break
+                    else:
+                        crossword.pop()
+            elif random_choice <= 0.75:
+                random_ind = random.randint(0, len(crossword) - 1)
+                while True:
+                    crossword[random_ind] = random.choice(possible_intersections)
+                    if check_crossword(crossword):
+                        proper_crossword = True
+                        break
+            else:
+                break
+        res_crosswords.append(crossword)
+    return res_crosswords
+
+
 inp = []
 for line in fileinput.input(files='input.txt'):
     inp.append(line.removesuffix("\n"))
@@ -104,7 +134,7 @@ n = len(inp)
 possible_intersections = find_possible_intersections(inp)
 crosswords = []
 # print(possible_intersections)
-for i in range(100):
+for i in range(n * n):
     while True:
         random_crossword = []
         temp_possible_intersections = copy.deepcopy(possible_intersections)
@@ -119,10 +149,10 @@ for i in range(100):
             break
 
 while True:
-    best_crosswords = choose_best_crosswords(crosswords)
+    best_crosswords = choose_best_crosswords(crosswords, n)
     crosswords = copy.deepcopy(best_crosswords)
-    for i in range(10):
-        for j in range(i + 1, 10):
+    for i in range(n):
+        for j in range(i + 1, n):
             crosswords.append(crosswords_crossover(best_crosswords[i], best_crosswords[j], True))
             crosswords.append(crosswords_crossover(best_crosswords[i], best_crosswords[j], False))
-    print(len(crosswords))
+    crosswords = crosswords_mutation(crosswords)
