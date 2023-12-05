@@ -1,11 +1,39 @@
-list1 = [1, 2, 3, 4, 5]
-list2 = [3, 4, 5, 8, 7]
+import fileinput
+import math
 
-all_elements = list1[:]
-for elem in list2:
-    if elem not in all_elements:
-        all_elements.append(elem)
-print(all_elements)
-common_elements = list(set(list1) & set(list2))
-print(common_elements)
-print(list(set(all_elements) - set(common_elements)))
+import numpy
+import matplotlib.pyplot as plt
+
+mean_arr = numpy.array([])
+max_arr = numpy.array([])
+num = [[]] * 100
+
+for test_number in range(1, 101):
+    for line in fileinput.input(files=f'statistics/stat{test_number}.txt'):
+        if "Average" in line:
+            mean_arr = numpy.append(mean_arr, float(line.split(': ')[1]))
+        else:
+            max_arr = numpy.append(max_arr, float(line.split(': ')[1]))
+            num[int(math.sqrt(max_arr[-1]))].append(mean_arr[-1])
+
+ans = []
+for i in num:
+    if sum(i) > 0:
+        ans.append(sum(i) / len(i))
+print(len(ans))
+# print("Mean:", round(fitness_arr.mean(), 2))
+# print("Maximum:", sorted(fitness_arr)[-1])
+
+# print("Mean: ", mean_arr)
+# print("Maximum: ", max_arr)
+#
+# x = [i for i in range(5, 20)]
+# y = sorted(ans)
+
+# plt.plot(x, y)
+#
+# plt.show()
+# def generation_imitation(inp, test_num):
+#     with open(f"statistics/stat{test_num}.txt", "w") as output:
+#         output.write(f"Average fitness function: {(len(inp) / 2)**2 + random.randint(math.floor(random.choice([len(inp) / 2, math.ceil(len(inp) / 2)])), math.floor(len(inp) / 2 * 3))}\n")
+#         output.write(f"Maximum fitness function: {len(inp)**2}")

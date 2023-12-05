@@ -1,0 +1,2 @@
+Average fitness function: 21.25
+Maximum fitness function: 49

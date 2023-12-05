@@ -1,33 +1,10 @@
-import fileinput
-
-
-class Crossword:
-    def __init__(self, words):
-        self.words = words
-
-    class Cell:
-        types = []
-
-        def add(self, tp):
-            self.types.append(tp)
-
-        def has(self, tp):
-            return tp in self.types
-
-    def add_word(self, word):
-        self.words.append(word)
-    # def check_intersection(self, first, second):
-
-def random_generate(words):
-    collection = [(words[0], 0, 0, True)]
-    for word in words:
-
-
-inp = []
-for line in fileinput.input(files='input.txt'):
-    inp.append(line.removesuffix("\n"))
-print(inp)
-
-words_collection = random_generate(inp)
-
-cross = Crossword(inp)
+7 3 1
+7 3 0
+0 9 1
+13 4 0
+11 4 0
+9 3 0
+9 11 1
+9 5 1
+10 0 1
+10 0 0

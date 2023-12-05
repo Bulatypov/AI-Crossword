@@ -1,0 +1,7 @@
+yen
+short
+minute
+rest
+bizarre
+postal
+chan

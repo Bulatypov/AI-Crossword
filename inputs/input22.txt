@@ -1,0 +1,8 @@
+dir
+particle
+doctrine
+parties
+mastercard
+cleveland
+first
+dosage

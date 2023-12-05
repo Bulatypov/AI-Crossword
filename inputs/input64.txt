@@ -1,0 +1,9 @@
+outline
+penalty
+jelsoft
+observation
+ground
+hard
+estimates
+trading
+flash

@@ -1,0 +1,8 @@
+details
+weights
+resolve
+packed
+ppc
+columbus
+proceeds
+metro

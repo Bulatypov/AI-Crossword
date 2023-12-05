@@ -1,0 +1,7 @@
+double
+exercises
+float
+marie
+signals
+seen
+customs
